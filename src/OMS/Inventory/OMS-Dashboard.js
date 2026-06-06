@@ -7,6 +7,7 @@ import '../Inventory/Styling/dashboard.css';
 import { API_URLS } from '../config';
 
 const Dashboard = () => {
+    // eslint-disable-next-line no-unused-vars
     const [orders, setOrders] = useState([]);
     const [totalOrders, setTotalOrders] = useState(0);
     const [processedOrders, setProcessedOrders] = useState(0);
