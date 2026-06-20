@@ -1,69 +1,70 @@
-/* Container styling */
-/*  */
-
-/* Table styling */
-.table {
+/* Shared table styles — InventoryConsole */
+.inventory-table {
+  margin-top: 16px;
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  background-color: #ffffff; /* White background for table */
+  background-color: #fff;
+  font-size: 14px;
 }
 
-.table th, .table td {
-  padding: 12px; /* Padding inside table cells */
-  text-align: left;
-  border: 1px solid #dee2e6; /* Border color */
+.inventory-table thead th {
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: 600;
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid #dedede;
+  cursor: pointer;
+  user-select: none;
 }
 
-.table thead {
-  background-color: #343a40; /* Dark header background */
-  color: #ffffff; /* White text color in header */
+.inventory-table td {
+  padding: 10px 12px;
+  text-align: center;
+  border: 1px solid #dedede;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-.table th {
-  cursor: pointer; /* Pointer cursor for sortable columns */
+.inventory-table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.table tr:nth-child(even) {
-  background-color: #f2f2f2; /* Zebra striping */
+.inventory-table tbody tr:hover { background-color: #fff5f5; }
+
+/* Search */
+.custom-input {
+  border: 1px solid #dedede;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
 }
 
-/* Search input styling */
-.search-container {
-  margin-bottom: 20px;
+.custom-input:focus {
+  border-color: #dd1e25;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(221,30,37,.1);
 }
 
-.search-input {
-  padding: 8px;
-  font-size: 16px;
-   /* Border color for input */
-  border-radius: 4px; /* Rounded corners */
-}
-
-/* Pagination styling */
-
-/* Example CSS Adjustments */
-.pagination {
-  margin-top: 10px; /* Space between pagination and footer */
-}
-
-.table-header {
-  text-align: center; 
-}
+/* Pagination */
+.pagination { margin-top: 12px; }
 
 .pagination .page-link {
   color: #dd1e25;
   border: none;
   outline: none;
+  transition: color 0.2s ease;
 }
 
-.pagination .page-link:hover {
-  text-decoration: underline;
-}
+.pagination .page-link:hover { text-decoration: underline; }
 
 .pagination .active .page-link {
+  font-weight: 600;
   text-decoration: underline;
   color: #dd1e25;
-  background-color: white; 
+  background-color: #fff;
   border: none;
 }

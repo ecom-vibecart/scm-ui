@@ -8,31 +8,31 @@ import './Styling/inv_console.css'; // Ensure this path is correct
 const InventoryConsole = () => {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [pageRange, setPageRange] = useState([1, 2, 3]); // State for dynamic page numbers
+  const [pageRange, setPageRange] = useState([1, 2, 3]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch data from API using axios
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(API_URLS.getAllInventories);
         const result = response.data;
-
         if (result.success) {
-          const transformedData = result.data.map(item => ({
+          setData(result.data.map(item => ({
             skuId: item.skuId,
             availableQty: item.availableQuantity,
             reservedQty: item.reservedQuantity,
             totalQty: item.totalQuantity,
-          }));
-          setData(transformedData);
+          })));
         } else {
-          console.error('Failed to fetch data:', result.message);
+          setError('Failed to fetch inventory data.');
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } catch {
+        setError('Failed to load inventory data.');
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -97,8 +97,22 @@ const InventoryConsole = () => {
     }
   };
 
+  if (loading) return (
+    <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+      <div className="spinner-border text-danger" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+      <div className="alert alert-danger">{error}</div>
+    </div>
+  );
+
   return (
-    <div fluid className="mt-3" style={{ marginBottom: '150px' }}> {/* Adjust height above footer */}
+    <div fluid className="mt-3" style={{ marginBottom: '150px' }}>
       <Row className="mb-4">
         <Col md={4} className="custom-input-group">
           <InputGroup style={{ border: "0px solid #dedede", borderRadius: "9px 9px" }}>

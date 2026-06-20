@@ -15,69 +15,49 @@ const Dashboard = () => {
     const [completedOrders, setCompletedOrders] = useState(0);
     const [cancelledOrdersCount, setCancelledOrdersCount] = useState(0);
     const [inventoryData, setInventoryData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchOrdersData = async () => {
-            try {
-                const { data: result } = await axios.get(API_URLS.getAllOrders);
-
-                if (result.success) {
-                    const orderData = result.data;
-                    setOrders(orderData);
-
-                    const total = orderData.length;
-
-                    // Filtering and counting
-                    const processed = orderData.filter(order => order.orderStatus !== 'COMPLETED' && order.orderStatus !== 'CANCELLED').length;
-                    const completed = orderData.filter(order => order.orderStatus.toUpperCase() === 'COMPLETED').length;
-                    const cancelled = orderData.filter(order => order.orderStatus.toUpperCase() === 'CANCELLED').length;
-
-                    setTotalOrders(total);
-                    setProcessedOrders(processed);
-                    setCompletedOrders(completed);
-                    setCancelledOrdersCount(cancelled);
-
-                    createPieChart('orderPieChart', processed, completed, cancelled);
-                } else {
-                    throw new Error('Unexpected response structure');
-                }
-            } catch (error) {
-                console.error('Error fetching orders:', error);
-            }
+            const { data: result } = await axios.get(API_URLS.getAllOrders);
+            if (!result.success) throw new Error('Unexpected response structure');
+            const orderData = result.data;
+            setOrders(orderData);
+            const total = orderData.length;
+            const processed = orderData.filter(order => order.orderStatus !== 'COMPLETED' && order.orderStatus !== 'CANCELLED').length;
+            const completed = orderData.filter(order => order.orderStatus.toUpperCase() === 'COMPLETED').length;
+            const cancelled = orderData.filter(order => order.orderStatus.toUpperCase() === 'CANCELLED').length;
+            setTotalOrders(total);
+            setProcessedOrders(processed);
+            setCompletedOrders(completed);
+            setCancelledOrdersCount(cancelled);
         };
 
         const fetchInventoryData = async () => {
-            try {
-                const { data: result } = await axios.get(API_URLS.getInventoryReport);
-
-                if (result.success && Array.isArray(result.data)) {
-                    const inventory = result.data;
-
-                    // Update state with the inventory data
-                    setInventoryData(inventory);
-                } else {
-                    throw new Error('Unexpected response format: Expected an array inside "data"');
-                }
-            } catch (error) {
-                console.error('Error fetching inventory data:', error);
-            }
+            const { data: result } = await axios.get(API_URLS.getInventoryReport);
+            if (!result.success || !Array.isArray(result.data)) throw new Error('Unexpected inventory response');
+            setInventoryData(result.data);
         };
 
-        fetchOrdersData();
-        fetchInventoryData();
+        Promise.all([fetchOrdersData(), fetchInventoryData()])
+            .catch(err => {
+                console.error('Dashboard fetch error:', err);
+                setError('Failed to load dashboard data.');
+            })
+            .finally(() => setLoading(false));
     }, []);
 
-    const createPieChart = (elementId, processed, completed, cancelled) => {
-        let root = am5.Root.new(elementId);
+    // Chart is created only after loading is done and the div is in the DOM
+    useEffect(() => {
+        if (loading || error) return;
 
-        root.setThemes([
-            am5themes_Animated.new(root)
-        ]);
+        const root = am5.Root.new("orderPieChart");
 
-        // Remove amCharts watermark
+        root.setThemes([am5themes_Animated.new(root)]);
         root._logo.dispose();
 
-        let colors = am5.ColorSet.new(root, {
+        const colors = am5.ColorSet.new(root, {
             colors: [
                 am5.color("#dd1e25"),
                 am5.color("#fbb3b5"),
@@ -87,14 +67,14 @@ const Dashboard = () => {
             reuse: true
         });
 
-        let chart = root.container.children.push(
+        const chart = root.container.children.push(
             am5percent.PieChart.new(root, {
                 layout: root.verticalLayout,
                 radius: am5.percent(40)
             })
         );
 
-        let series = chart.series.push(
+        const series = chart.series.push(
             am5percent.PieSeries.new(root, {
                 name: "Series",
                 valueField: "value",
@@ -103,18 +83,35 @@ const Dashboard = () => {
         );
 
         series.set("colors", colors);
-
-        let data = [
-            { category: "Processed", value: processed },
-            { category: "Completed", value: completed },
-            { category: "Cancelled", value: cancelled }
-        ];
-
-        series.data.setAll(data);
+        series.data.setAll([
+            { category: "Processed", value: processedOrders },
+            { category: "Completed", value: completedOrders },
+            { category: "Cancelled", value: cancelledOrdersCount }
+        ]);
 
         series.appear(1000, 100);
         chart.appear(1000, 100);
-    };
+
+        return () => root.dispose();
+    }, [loading, error, processedOrders, completedOrders, cancelledOrdersCount]);
+
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+                <div className="spinner-border text-danger" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+                <div className="alert alert-danger">{error}</div>
+            </div>
+        );
+    }
 
     return (
         <div className='content-section'>

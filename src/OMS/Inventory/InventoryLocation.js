@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Row, Col, Button, Table, InputGroup, FormControl, Alert } from 'react-bootstrap';
 import './Styling/inv_location.css';
-import ClipLoader from 'react-spinners/ClipLoader'; // Loader
 import { API_URLS } from "../config";
 import axios from 'axios';
 
@@ -133,10 +132,11 @@ const InventoryLocation = () => {
 
                     {/* Loader or Error Display */}
                     {loading ? (
-                        <Row className="justify-content-center align-items-center flex-grow-1" style={{ height: '100%' }}>
+                        <Row className="justify-content-center align-items-center flex-grow-1" style={{ height: '60vh' }}>
                             <Col className="text-center">
-                                <ClipLoader color="#007bff" size={50} />
-                                <div className="mt-2">Loading data...</div>
+                                <div className="spinner-border text-danger" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
                             </Col>
                         </Row>
                     ) : error ? (

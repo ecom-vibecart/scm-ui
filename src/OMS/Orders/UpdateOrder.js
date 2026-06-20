@@ -5,11 +5,11 @@ import { Container, Row, Col, Button, Table, InputGroup, FormControl } from 'rea
 
 const OrderUpdate = () => {
   const dispatch = useDispatch();
-  const orderData = useSelector((state) => state.orders.orderData);
+  const { orderData, status, error } = useSelector((state) => state.orders);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectAll, setSelectAll] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
-  const [disabledOrders, setDisabledOrders] = useState([]); 
+  const [disabledOrders, setDisabledOrders] = useState([]);
   const [cancelAllDisabled, setCancelAllDisabled] = useState(false);
 
   useEffect(() => {
@@ -86,6 +86,20 @@ const OrderUpdate = () => {
       alert('No orders selected for cancellation');
     }
   };
+
+  if (status === 'loading') return (
+    <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+      <div className="spinner-border text-danger" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  );
+
+  if (status === 'failed') return (
+    <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+      <div className="alert alert-danger">{error || 'Failed to load orders.'}</div>
+    </div>
+  );
 
   return (
     <div className='content-section'>

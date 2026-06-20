@@ -23,9 +23,14 @@ const Header = ({ onLogout, isLoggedIn, isLoginPage }) => {
         onLogout();
     };
 
-    const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen); 
-    };
+    useEffect(() => {
+        if (!dropdownOpen) return;
+        const close = (e) => {
+            if (!e.target.closest('.user-info')) setDropdownOpen(false);
+        };
+        document.addEventListener('mousedown', close);
+        return () => document.removeEventListener('mousedown', close);
+    }, [dropdownOpen]);
 
     return (
         <header className="header-container">
@@ -33,7 +38,7 @@ const Header = ({ onLogout, isLoggedIn, isLoginPage }) => {
                 <span className='bold'>VIBE</span><span>CART</span>
             </div>
 
-            <div className={`header-subtitle ${isLoginPage ? 'login-subtitle' : ''}`}>
+            <div className="header-subtitle">
                 <h5>Order Management System</h5>
             </div>
 
@@ -41,14 +46,12 @@ const Header = ({ onLogout, isLoggedIn, isLoginPage }) => {
                 {isLoggedIn && (
                     <div
                         className="user-info"
-                        onClick={toggleDropdown} 
-                        style={{ display: "flex", flexDirection: "column" }}
+                        onClick={() => setDropdownOpen(prev => !prev)}
                     >
-                        <FaRegUserCircle className="user-icon" size={30} color='#dd1e25'/>
+                        <FaRegUserCircle className="user-icon" size={26} color='#dd1e25'/>
                         <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
-                            <div className="dropdown-header">Account Details</div>
+                            <div className="dropdown-header">Account</div>
                             <span className="dropdown-item">{username || 'User'}</span>
-                            <span className="dropdown-item">Settings</span>
                             <button className="dropdown-item" onClick={handleLogout}>Sign out</button>
                         </div>
                     </div>

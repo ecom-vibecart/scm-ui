@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="footer-container">
       <div className="footer-text">
-        © 2024 VibeCart - Nisum All Rights Reserved
+        &copy; {new Date().getFullYear()} VibeCart &mdash; All Rights Reserved
       </div>
     </footer>
   );
