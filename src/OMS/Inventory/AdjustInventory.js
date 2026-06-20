@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import './Styling/inv_console.css'; // Ensure this path is correct
 import "../config";
 import { API_URLS } from '../config';
+import axios from 'axios';
 
 const AdjustInventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
@@ -21,8 +22,7 @@ const AdjustInventory = () => {
   useEffect(() => {
     const fetchInventoryData = async () => {
       try {
-        const response = await fetch(API_URLS.getAllWarehouses);
-        const result = await response.json();
+        const { data: result } = await axios.get(API_URLS.getAllWarehouses);
         if (result.success) {
           setInventoryData(result.data);
         } else {
@@ -129,19 +129,11 @@ const AdjustInventory = () => {
     }
 
     try {
-      const response = await fetch(API_URLS.updateSingleInventory, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sku: selectedRow.skuId,
-          quantityToAdd: parseInt(quantityToAdd),
-          warehouseId: selectedRow.warehouseId,
-        }),
+      const { data: result } = await axios.put(API_URLS.updateSingleInventory, {
+        sku: selectedRow.skuId,
+        quantityToAdd: parseInt(quantityToAdd),
+        warehouseId: selectedRow.warehouseId,
       });
-
-      const result = await response.json();
       if (result.success) {
         setInventoryData((prevData) =>
           prevData.map((item) =>
