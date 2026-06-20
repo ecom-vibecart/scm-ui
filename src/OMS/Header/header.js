@@ -9,7 +9,7 @@ const Header = ({ onLogout, isLoggedIn, isLoginPage }) => {
 
     useEffect(() => {
         
-        const storedUsername = localStorage.getItem('email');
+        const storedUsername = sessionStorage.getItem('email');
         if (storedUsername) {
             setUsername(storedUsername);
         } else {
@@ -18,8 +18,8 @@ const Header = ({ onLogout, isLoggedIn, isLoginPage }) => {
     }, [isLoggedIn]); 
 
     const handleLogout = () => {
-        localStorage.removeItem('email'); 
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('email'); 
+        sessionStorage.removeItem('token');
         onLogout();
     };
 

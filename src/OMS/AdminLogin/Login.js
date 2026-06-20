@@ -58,8 +58,8 @@ const Login = () => {
 
         const token = response.data.message;
         const { email } = formData;
-        localStorage.setItem('token', token);
-        localStorage.setItem('email', email);
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('email', email);
         dispatch(login());
         Swal.fire({
           icon: 'success',
