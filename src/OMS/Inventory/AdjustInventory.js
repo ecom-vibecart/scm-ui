@@ -6,6 +6,7 @@ import './Styling/inv_console.css'; // Ensure this path is correct
 import "../config";
 import { API_URLS } from '../config';
 import axios from 'axios';
+import { isAdmin } from '../ReduxToolkit/AuthSlice';
 
 const AdjustInventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
@@ -49,7 +50,7 @@ const AdjustInventory = () => {
       { Header: 'Available Quantity', accessor: 'availableQuantity' },
       {
         Header: 'Action',
-        Cell: ({ row }) => (
+        Cell: ({ row }) => isAdmin() ? (
           <Button
             variant="success"
             onClick={() => handleAddQuantity(row.original)}
@@ -63,7 +64,7 @@ const AdjustInventory = () => {
           >
             Add Quantity
           </Button>
-        ),
+        ) : null,
       },
     ],
     []

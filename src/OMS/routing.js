@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { isAdmin } from "./ReduxToolkit/AuthSlice";
 import Dashboard from "./Inventory/OMS-Dashboard";
 import InventoryConsole from "./Inventory/InventoryConsole";
 import AdjustInventory from "./Inventory/AdjustInventory";
@@ -14,7 +15,7 @@ function Routing() {
             <Route path="/login" element={<Navigate to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/inventoryConsole" element={<InventoryConsole />} />
-            <Route path="/adjustInventory" element={<AdjustInventory />} />
+            <Route path="/adjustInventory" element={isAdmin() ? <AdjustInventory /> : <Navigate to="/dashboard" />} />
             <Route path="/inventoryLocation" element={<InventoryLocation />} />
             <Route path="/orderConsole" element={<OrderConsole />} />
             <Route path="/updateOrder" element={<UpdateOrder />} />

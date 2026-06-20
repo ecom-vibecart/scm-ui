@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { isAdmin } from '../ReduxToolkit/AuthSlice';
 import './Styling/sidebar.css';
 
 const Sidebar = () => {
@@ -47,12 +48,14 @@ const Sidebar = () => {
                             >
                                 Inventory Console
                             </button>
+                            {isAdmin() && (
                             <button
                                 className={`sidebar-btn ${activeButton === '/adjustInventory' ? 'active' : ''}`}
                                 onClick={() => handleButtonClick('/adjustInventory')}
                             >
                                 Adjust Inventory
                             </button>
+                            )}
                             <button
                                 className={`sidebar-btn ${activeButton === '/inventoryLocation' ? 'active' : ''}`}
                                 onClick={() => handleButtonClick('/inventoryLocation')}
@@ -77,12 +80,14 @@ const Sidebar = () => {
                             >
                                 Order Console
                             </button>
+                            {isAdmin() && (
                             <button
                                 className={`sidebar-btn ${activeButton === '/updateOrder' ? 'active' : ''}`}
                                 onClick={() => handleButtonClick('/updateOrder')}
                             >
                                 Cancel Order
                             </button>
+                            )}
                         </div>
                     )}
                 </div>
