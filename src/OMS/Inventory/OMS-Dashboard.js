@@ -15,56 +15,38 @@ const Dashboard = () => {
     const [completedOrders, setCompletedOrders] = useState(0);
     const [cancelledOrdersCount, setCancelledOrdersCount] = useState(0);
     const [inventoryData, setInventoryData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchOrdersData = async () => {
-            try {
-                const { data: result } = await axios.get(API_URLS.getAllOrders);
-
-                if (result.success) {
-                    const orderData = result.data;
-                    setOrders(orderData);
-
-                    const total = orderData.length;
-
-                    // Filtering and counting
-                    const processed = orderData.filter(order => order.orderStatus !== 'COMPLETED' && order.orderStatus !== 'CANCELLED').length;
-                    const completed = orderData.filter(order => order.orderStatus.toUpperCase() === 'COMPLETED').length;
-                    const cancelled = orderData.filter(order => order.orderStatus.toUpperCase() === 'CANCELLED').length;
-
-                    setTotalOrders(total);
-                    setProcessedOrders(processed);
-                    setCompletedOrders(completed);
-                    setCancelledOrdersCount(cancelled);
-
-                    createPieChart('orderPieChart', processed, completed, cancelled);
-                } else {
-                    throw new Error('Unexpected response structure');
-                }
-            } catch (error) {
-                console.error('Error fetching orders:', error);
-            }
+            const { data: result } = await axios.get(API_URLS.getAllOrders);
+            if (!result.success) throw new Error('Unexpected response structure');
+            const orderData = result.data;
+            setOrders(orderData);
+            const total = orderData.length;
+            const processed = orderData.filter(order => order.orderStatus !== 'COMPLETED' && order.orderStatus !== 'CANCELLED').length;
+            const completed = orderData.filter(order => order.orderStatus.toUpperCase() === 'COMPLETED').length;
+            const cancelled = orderData.filter(order => order.orderStatus.toUpperCase() === 'CANCELLED').length;
+            setTotalOrders(total);
+            setProcessedOrders(processed);
+            setCompletedOrders(completed);
+            setCancelledOrdersCount(cancelled);
+            createPieChart('orderPieChart', processed, completed, cancelled);
         };
 
         const fetchInventoryData = async () => {
-            try {
-                const { data: result } = await axios.get(API_URLS.getInventoryReport);
-
-                if (result.success && Array.isArray(result.data)) {
-                    const inventory = result.data;
-
-                    // Update state with the inventory data
-                    setInventoryData(inventory);
-                } else {
-                    throw new Error('Unexpected response format: Expected an array inside "data"');
-                }
-            } catch (error) {
-                console.error('Error fetching inventory data:', error);
-            }
+            const { data: result } = await axios.get(API_URLS.getInventoryReport);
+            if (!result.success || !Array.isArray(result.data)) throw new Error('Unexpected inventory response');
+            setInventoryData(result.data);
         };
 
-        fetchOrdersData();
-        fetchInventoryData();
+        Promise.all([fetchOrdersData(), fetchInventoryData()])
+            .catch(err => {
+                console.error('Dashboard fetch error:', err);
+                setError('Failed to load dashboard data.');
+            })
+            .finally(() => setLoading(false));
     }, []);
 
     const createPieChart = (elementId, processed, completed, cancelled) => {
@@ -115,6 +97,24 @@ const Dashboard = () => {
         series.appear(1000, 100);
         chart.appear(1000, 100);
     };
+
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+                <div className="spinner-border text-danger" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+                <div className="alert alert-danger">{error}</div>
+            </div>
+        );
+    }
 
     return (
         <div className='content-section'>

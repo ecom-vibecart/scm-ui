@@ -10,7 +10,9 @@ import axios from 'axios';
 const AdjustInventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [pageRange, setPageRange] = useState([1, 2, 3]); // State for dynamic page numbers
+  const [pageRange, setPageRange] = useState([1, 2, 3]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Modal state
   const [selectedRow, setSelectedRow] = useState(null);
@@ -26,10 +28,13 @@ const AdjustInventory = () => {
         if (result.success) {
           setInventoryData(result.data);
         } else {
-          console.error('Failed to fetch inventory data:', result.message);
+          setError('Failed to fetch inventory data.');
         }
-      } catch (error) {
-        console.error('Error fetching inventory data:', error);
+      } catch (err) {
+        console.error('Error fetching inventory data:', err);
+        setError('Error occurred while fetching inventory data.');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -152,6 +157,24 @@ const AdjustInventory = () => {
       Swal.fire('Error', 'Failed to update inventory.', 'error');
     }
   };
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+        <div className="spinner-border text-danger" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+        <div className="alert alert-danger">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <Container fluid className="mt-4">
