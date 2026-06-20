@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchOrders, cancelOrder } from '../ReduxToolkit/OrderSlice'; 
+import { fetchOrders, cancelOrder } from '../ReduxToolkit/OrderSlice';
 import { Container, Row, Col, Button, Table, InputGroup, FormControl } from 'react-bootstrap';
+import { isAdmin } from '../ReduxToolkit/AuthSlice';
 
 const OrderUpdate = () => {
   const dispatch = useDispatch();
@@ -120,6 +121,7 @@ const OrderUpdate = () => {
               </Button>
                 </InputGroup>
               </Col>
+              {isAdmin() && (
               <Col className="d-flex justify-content-end align-items-center">
                 <input
                   type="checkbox"
@@ -138,6 +140,7 @@ const OrderUpdate = () => {
                   Cancel ALL
                 </Button>
               </Col>
+              )}
             </Row>
             <Row>
               <Col>
@@ -182,16 +185,18 @@ const OrderUpdate = () => {
                           <td>{item.pincode}</td>
                           <td>{item.orderStatus}</td>
                           <td>
+                            {isAdmin() && (
                             <Button
-                              variant='outline-danger' 
+                              variant='outline-danger'
                               onClick={() => handleCancelOrder(item.orderId, item.orderStatus)}
-                              disabled={disabledOrders.includes(item.orderId) || 
+                              disabled={disabledOrders.includes(item.orderId) ||
                                         item.orderStatus === 'CANCELLED' ||
                                         !(item.orderStatus === 'CONFIRMED' || item.orderStatus === 'DISPATCHED')}
                               style={{ backgroundColor: '#dd1e25', color: '#fff', border: 'none' }}
                             >
                               Cancel
                             </Button>
+                            )}
                           </td>
                         </tr>
                       ))
