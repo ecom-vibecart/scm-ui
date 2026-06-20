@@ -47,9 +47,9 @@ const Header = ({ onLogout, isLoggedIn, isLoginPage }) => {
                         <FaRegUserCircle className="user-icon" size={30} color='#dd1e25'/>
                         <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
                             <div className="dropdown-header">Account Details</div>
-                            <a href="#" className="dropdown-item">{username || 'User'}</a> 
-                            <a href="#" className="dropdown-item">Settings</a>
-                            <a href="#" className="dropdown-item" onClick={handleLogout}>Sign out</a>
+                            <span className="dropdown-item">{username || 'User'}</span>
+                            <span className="dropdown-item">Settings</span>
+                            <button className="dropdown-item" onClick={handleLogout}>Sign out</button>
                         </div>
                     </div>
                 )}

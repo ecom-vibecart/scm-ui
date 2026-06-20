@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { FaPlus, FaMinus, FaBars } from 'react-icons/fa';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { FaPlus, FaMinus } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import './Styling/sidebar.css';
 
 const Sidebar = () => {
     const navigate = useNavigate();
-    const [showSidebar, setShowSidebar] = useState(false);
     const [showInventoryLinks, setShowInventoryLinks] = useState(false);
     const [showOrderLinks, setShowOrderLinks] = useState(false);
     const [activeButton, setActiveButton] = useState('');
    
     
-    const toggleSidebar = () => {
-        setShowSidebar(prev => !prev);
-    };
-
     const toggleInventoryLinks = () => {
         setShowInventoryLinks(prev => !prev);
     };
@@ -30,7 +25,7 @@ const Sidebar = () => {
 
     return (
         <div className='sidebar'>
-            <div className={`sidebar ${showSidebar ? 'show' : ''}`}>
+            <div className="sidebar">
                 <button
                     className={`sidebar-btn ${activeButton === '/dashboard' ? 'active' : ''}`}
                     onClick={() => handleButtonClick('/dashboard')}

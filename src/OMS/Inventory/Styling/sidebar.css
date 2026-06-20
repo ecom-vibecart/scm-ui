@@ -25,7 +25,7 @@
         display: block; 
         
         text-align: left;
-        width: calc(100% - o.01px);
+        width: calc(100% - 0.01px);
         margin: 13px;
         padding: 10px 15px;
         font-size: 14px; 
