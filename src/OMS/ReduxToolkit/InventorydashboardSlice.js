@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { API_URLS } from '../config';
 
 // Async thunk for fetching inventory data
 export const fetchInventoryData = createAsyncThunk(
   'inventory/fetchInventoryData',
   async () => {
-    const response = await fetch('VIBECART_URI/vibe-cart/inventory/inventory-report');
-    const data = await response.json();
-    return data.data || [];  // Ensure we return an array or empty array if data is undefined
+    const { data } = await axios.get(API_URLS.getInventoryReport);
+    return data.data || [];
   }
 );
 

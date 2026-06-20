@@ -5,6 +5,7 @@ import * as am5percent from "@amcharts/amcharts5/percent";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import '../Inventory/Styling/dashboard.css';
 import { API_URLS } from '../config';
+import axios from 'axios';
 
 const Dashboard = () => {
     // eslint-disable-next-line no-unused-vars
@@ -18,18 +19,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchOrdersData = async () => {
             try {
-                const response = await fetch(API_URLS.getAllOrders, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
+                const { data: result } = await axios.get(API_URLS.getAllOrders);
 
                 if (result.success) {
                     const orderData = result.data;
@@ -58,18 +48,7 @@ const Dashboard = () => {
 
         const fetchInventoryData = async () => {
             try {
-                const response = await fetch(API_URLS.getInventoryReport, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const result = await response.json();
+                const { data: result } = await axios.get(API_URLS.getInventoryReport);
 
                 if (result.success && Array.isArray(result.data)) {
                     const inventory = result.data;

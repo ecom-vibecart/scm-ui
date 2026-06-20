@@ -3,6 +3,7 @@ import { Container, Row, Col, Button, Table, InputGroup, FormControl, Alert } fr
 import './Styling/inv_location.css';
 import ClipLoader from 'react-spinners/ClipLoader'; // Loader
 import { API_URLS } from "../config";
+import axios from 'axios';
 
 const InventoryLocation = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -37,8 +38,7 @@ const InventoryLocation = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(API_URLS.getAllWarehouses);
-                const result = await response.json();
+                const { data: result } = await axios.get(API_URLS.getAllWarehouses);
                 if (result.success) {
                     setInventoryData(result.data);
                 } else {
