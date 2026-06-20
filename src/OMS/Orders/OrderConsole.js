@@ -8,11 +8,12 @@ import { API_URLS } from "../config"
 
 const OrderConsole = () => {
   const dispatch = useDispatch();
-  const orderData = useSelector((state) => state.orders.orderData);
+  const { orderData, status, error } = useSelector((state) => state.orders);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [modalLoading, setModalLoading] = useState(false);
 
   useEffect(() => {
     dispatch(fetchOrders());
@@ -29,14 +30,16 @@ const OrderConsole = () => {
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   const handleShowDetails = async (orderId) => {
+    setSelectedOrder(null);
+    setShowModal(true);
+    setModalLoading(true);
     try {
-      // Fetch order details from the API
       const response = await axios.get(API_URLS.getOrderById(orderId));
-      const orderDetails = response.data.data;
-      setSelectedOrder(orderDetails);
-      setShowModal(true);
-    } catch (error) {
-      console.error('Failed to fetch order details:', error);
+      setSelectedOrder(response.data.data);
+    } catch {
+      setShowModal(false);
+    } finally {
+      setModalLoading(false);
     }
   };
 
@@ -52,6 +55,20 @@ const OrderConsole = () => {
     printWindow.focus();
     printWindow.print();
   };
+
+  if (status === 'loading') return (
+    <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+      <div className="spinner-border text-danger" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  );
+
+  if (status === 'failed') return (
+    <div className="d-flex justify-content-center align-items-center" style={{ height: '60vh' }}>
+      <div className="alert alert-danger">{error || 'Failed to load orders.'}</div>
+    </div>
+  );
 
   return (
     <div className='content-section'>
@@ -91,7 +108,7 @@ const OrderConsole = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="13" className="text-center">No orders found</td>
+                    <td colSpan="2" className="text-center">No orders found</td>
                   </tr>
                 )}
               </tbody>
@@ -102,13 +119,20 @@ const OrderConsole = () => {
       </Container>
 
       {/* Modal for Order Details */}
-      {selectedOrder && (
-
-        <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
-          <Modal.Header closeButton className="border-0 pb-0">
-            <Modal.Title className="text-dark">Order Details - {selectedOrder.orderId}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="bg-light" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+      <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
+        <Modal.Header closeButton className="border-0 pb-0">
+          <Modal.Title className="text-dark">
+            {selectedOrder ? `Order Details - ${selectedOrder.orderId}` : 'Order Details'}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="bg-light" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+          {modalLoading ? (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
+              <div className="spinner-border text-danger" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          ) : selectedOrder ? (
             <Container>
               {/* Order and Customer Information */}
               <Row className="mb-3">
@@ -202,16 +226,15 @@ const OrderConsole = () => {
                 </Col>
               </Row>
             </Container>
-          </Modal.Body>
-          <Modal.Footer className="bg-light border-0">
-            <Button variant="dark" onClick={handleCloseModal} style={{ padding: '0.5rem 1rem' }}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handlePrint}>Print</Button>
-          </Modal.Footer>
-        </Modal>
-
-      )}
+          ) : null}
+        </Modal.Body>
+        <Modal.Footer className="bg-light border-0">
+          <Button variant="dark" onClick={handleCloseModal} style={{ padding: '0.5rem 1rem' }}>
+            Close
+          </Button>
+          {selectedOrder && <Button variant="primary" onClick={handlePrint}>Print</Button>}
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
