@@ -32,7 +32,6 @@ const Dashboard = () => {
             setProcessedOrders(processed);
             setCompletedOrders(completed);
             setCancelledOrdersCount(cancelled);
-            createPieChart('orderPieChart', processed, completed, cancelled);
         };
 
         const fetchInventoryData = async () => {
@@ -49,17 +48,16 @@ const Dashboard = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    const createPieChart = (elementId, processed, completed, cancelled) => {
-        let root = am5.Root.new(elementId);
+    // Chart is created only after loading is done and the div is in the DOM
+    useEffect(() => {
+        if (loading || error) return;
 
-        root.setThemes([
-            am5themes_Animated.new(root)
-        ]);
+        const root = am5.Root.new("orderPieChart");
 
-        // Remove amCharts watermark
+        root.setThemes([am5themes_Animated.new(root)]);
         root._logo.dispose();
 
-        let colors = am5.ColorSet.new(root, {
+        const colors = am5.ColorSet.new(root, {
             colors: [
                 am5.color("#dd1e25"),
                 am5.color("#fbb3b5"),
@@ -69,14 +67,14 @@ const Dashboard = () => {
             reuse: true
         });
 
-        let chart = root.container.children.push(
+        const chart = root.container.children.push(
             am5percent.PieChart.new(root, {
                 layout: root.verticalLayout,
                 radius: am5.percent(40)
             })
         );
 
-        let series = chart.series.push(
+        const series = chart.series.push(
             am5percent.PieSeries.new(root, {
                 name: "Series",
                 valueField: "value",
@@ -85,18 +83,17 @@ const Dashboard = () => {
         );
 
         series.set("colors", colors);
-
-        let data = [
-            { category: "Processed", value: processed },
-            { category: "Completed", value: completed },
-            { category: "Cancelled", value: cancelled }
-        ];
-
-        series.data.setAll(data);
+        series.data.setAll([
+            { category: "Processed", value: processedOrders },
+            { category: "Completed", value: completedOrders },
+            { category: "Cancelled", value: cancelledOrdersCount }
+        ]);
 
         series.appear(1000, 100);
         chart.appear(1000, 100);
-    };
+
+        return () => root.dispose();
+    }, [loading, error, processedOrders, completedOrders, cancelledOrdersCount]);
 
     if (loading) {
         return (
