@@ -1,70 +1,101 @@
-# Getting Started with Create React App
+# vibecart-orders-ui (scm-ui)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Admin dashboard for Supply Chain Management — view and manage orders, track inventory, and manage warehouses.
 
-## Available Scripts
+**Port:** `3001`  
+**React:** 19.2.7 | **Framework:** Create React App
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Order management table with search, sort, filter, and pagination
+- Inventory tracking per SKU per warehouse
+- Warehouse management
+- Charts and dashboards for order/inventory analytics
+- DataTables integration for large data sets
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Package | Version | Purpose |
+|---|---|---|
+| `react` | 19.2.7 | UI framework |
+| `react-router-dom` | 6.30.4 | Client-side routing |
+| `@reduxjs/toolkit` | 2.12.0 | State management |
+| `react-redux` | 9.3.0 | React–Redux bindings |
+| `axios` | 1.7.5 | HTTP client |
+| `bootstrap` | 5.3.8 | CSS framework |
+| `react-bootstrap` | 2.10.10 | Bootstrap React components |
+| `datatables.net` + `datatables.net-dt` | 2.1.5 | Advanced data tables |
+| `jquery` | 3.7.1 | DataTables dependency |
+| `react-table` | 7.8.0 | React table primitives |
+| `react-paginate` | 8.3.0 | Pagination component |
+| `react-spinners` | 0.14.1 | Loading indicators |
+| `sweetalert2` | 11.13.2 | Alert dialogs |
+| `@amcharts/amcharts5` | 5.18.0 | Charts |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Getting Started
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+# Install dependencies
+npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Start development server (http://localhost:3001)
+npm start
 
-### `npm run eject`
+# Production build
+npm run build
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Environment Variables
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Create a `.env` file in this directory:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+PORT=3001
+REACT_APP_API_URL=http://localhost:5001
+SKIP_PREFLIGHT_CHECK=true
+GENERATE_SOURCEMAP=false
+```
 
-## Learn More
+| Variable | Description |
+|---|---|
+| `REACT_APP_API_URL` | API Gateway base URL |
+| `PORT` | Dev server port |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## API Integration
 
-### Code Splitting
+```
+Base URL: REACT_APP_API_URL
+Orders:    /api/v1/vibe-cart/scm/orders/**
+Inventory: /api/v1/vibe-cart/scm/inventory/**
+Warehouse: /api/v1/vibe-cart/scm/warehouses/**
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+src/
+├── App.js
+├── index.js
+└── OMS/
+    ├── Orders/       # Order list, detail, status updates
+    ├── Inventory/    # Inventory grid and management
+    └── Warehouse/    # Warehouse CRUD
+```
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Notes
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `.npmrc` sets `legacy-peer-deps=true` — required because `react-spinners@0.14.1` and `react-split-pane@0.1.92` declare peer deps for React ≤18 but work correctly with React 19 at runtime.
