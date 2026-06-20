@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { login } from '../ReduxToolkit/AuthSlice';
-import Swal from 'sweetalert2';
 import './login.css';
 import { API_URLS } from '../config';
 
@@ -38,7 +37,6 @@ const Login = () => {
       sessionStorage.setItem('token', token);
       sessionStorage.setItem('email', email);
       dispatch(login());
-      Swal.fire({ icon: 'success', title: 'Login Successful', showConfirmButton: false, timer: 1500 });
       navigate('/dashboard');
     } catch {
       setError('Invalid email or password. Please try again.');
