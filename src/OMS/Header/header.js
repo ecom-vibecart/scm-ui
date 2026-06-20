@@ -23,17 +23,13 @@ const Header = ({ onLogout, isLoggedIn, isLoginPage }) => {
         onLogout();
     };
 
-    const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen); 
-    };
-
     return (
         <header className="header-container">
             <div className="header-title">
                 <span className='bold'>VIBE</span><span>CART</span>
             </div>
 
-            <div className={`header-subtitle ${isLoginPage ? 'login-subtitle' : ''}`}>
+            <div className="header-subtitle">
                 <h5>Order Management System</h5>
             </div>
 
@@ -41,14 +37,13 @@ const Header = ({ onLogout, isLoggedIn, isLoginPage }) => {
                 {isLoggedIn && (
                     <div
                         className="user-info"
-                        onClick={toggleDropdown} 
-                        style={{ display: "flex", flexDirection: "column" }}
+                        onMouseEnter={() => setDropdownOpen(true)}
+                        onMouseLeave={() => setDropdownOpen(false)}
                     >
-                        <FaRegUserCircle className="user-icon" size={30} color='#dd1e25'/>
+                        <FaRegUserCircle className="user-icon" size={26} color='#dd1e25'/>
                         <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
-                            <div className="dropdown-header">Account Details</div>
+                            <div className="dropdown-header">Account</div>
                             <span className="dropdown-item">{username || 'User'}</span>
-                            <span className="dropdown-item">Settings</span>
                             <button className="dropdown-item" onClick={handleLogout}>Sign out</button>
                         </div>
                     </div>

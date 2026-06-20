@@ -1,10 +1,49 @@
 :root {
-    --card-background-color: #ffffff; /* Card background color */
-    --title-color: #333; /* Title color */
-    --border-color: #ced4da; /* Border color */
-    --error-border-color: #dc3545; /* Error border color */
-    --error-text-color: #dc3545; /* Error text color */
-    --text-color: #333; /* General text color */
-    --form-control-padding: 5px; /* Padding for form controls */
-    --border-radius: 4px; /* Border radius */
-  }
+  /* Brand */
+  --vc-primary:        #dd1e25;
+  --vc-primary-hover:  #b01920;
+  --vc-primary-dark:   #8c0e12;
+
+  /* Surfaces */
+  --vc-bg:             #efefef;
+  --vc-surface:        #ffffff;
+  --vc-sidebar-bg:     #f8f9fa;
+  --vc-table-head:     #f5f5f5;
+  --vc-row-hover:      #fff5f5;
+
+  /* Borders & Text */
+  --vc-border:         #dedede;
+  --vc-text:           #333333;
+  --vc-text-muted:     #777777;
+  --vc-error:          #dc3545;
+
+  /* Shadows */
+  --vc-shadow-sm:      0 1px 4px rgba(0,0,0,.08);
+  --vc-shadow-md:      0 2px 8px rgba(0,0,0,.10);
+  --vc-shadow-lg:      0 4px 16px rgba(0,0,0,.14);
+
+  /* Shape */
+  --vc-radius-sm:      4px;
+  --vc-radius:         6px;
+  --vc-radius-lg:      8px;
+
+  /* Motion */
+  --vc-transition:     0.2s ease;
+
+  /* Layout */
+  --vc-header-height:  60px;
+  --vc-sidebar-width:  220px;
+
+  /* Legacy aliases keep existing var() refs working */
+  --card-background-color:         var(--vc-surface);
+  --title-color:                   var(--vc-text);
+  --border-color:                  var(--vc-border);
+  --error-border-color:            var(--vc-error);
+  --error-text-color:              var(--vc-error);
+  --text-color:                    var(--vc-text);
+  --background-color:              var(--vc-bg);
+  --form-control-padding:          8px;
+  --border-radius:                 var(--vc-radius);
+  --button-background-color:       var(--vc-primary);
+  --button-hover-background-color: var(--vc-primary-hover);
+}

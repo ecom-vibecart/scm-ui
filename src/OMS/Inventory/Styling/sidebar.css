@@ -1,38 +1,42 @@
-
+/* Shared sidebar nav button — used in OMS (Bootstrap grid layout) */
 .sidebar-btn {
-    background-color: transparent;
-    color: #000;
-    border: none; 
-    width: 105%;
-    text-align: left;
-    padding: 10px; 
-    margin: 10px 0; 
-    outline: none; 
-    margin-right: 10px;
-    
+  background-color: transparent;
+  color: var(--vc-text, #333);
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  margin: 2px 0;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  border-radius: var(--vc-radius, 6px);
+  transition: background-color var(--vc-transition, 0.2s ease),
+              color var(--vc-transition, 0.2s ease);
+  outline: none;
+}
+
+.sidebar-btn:hover {
+  background-color: var(--vc-row-hover, #fff5f5);
+  color: var(--vc-primary, #dd1e25);
 }
 
 .sidebar-btn.active {
-    background-color: rgba(0, 0, 0, 0.05); 
-    font-weight: bold; 
+  background-color: #fde8e9;
+  border-left: 3px solid var(--vc-primary, #dd1e25);
+  font-weight: 600;
+  color: var(--vc-primary, #dd1e25);
+  padding-left: 11px;
 }
 
-
-
+.sub-menu .sidebar-btn {
+  padding-left: 26px;
+  font-size: 13px;
+}
 
 @media screen and (max-width: 768px) {
-    .sidebar-btn {
-        display: block; 
-        
-        text-align: left;
-        width: calc(100% - 0.01px);
-        margin: 13px;
-        padding: 10px 15px;
-        font-size: 14px; 
-        font-weight: normal;
-    }
-
-    .sidebar-btn.active {
-        background-color: rgba(0, 0, 0, 0.05);
-    }
+  .sidebar-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
 }

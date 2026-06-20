@@ -1,62 +1,77 @@
-.login-container {
-  /* margin: auto; */
-  /* background-color: var(--background-color) !important; */
-  background-image: url('https://tailwindui.com/img/beams-cover@95.jpg');
-  /* min-height: 100vh; */
-}
-.login-card {
-  min-width: 400px;
-  padding: 20px;
-  border-radius: var(--border-radius);
-  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-  background-color: white;
-  margin-top: 100px;
-}
+@import '../Inventory/Styling/styles.css';
 
-.login-title {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: var(--title-color);
-}
-
-  .form-group {
-  margin-bottom: 15px;
-}
-.form-control.error-highlight {
-  border-color: var(--error-border-color);
-}
-.error-message {
-  color: var(--error-text-color);
-  font-size: 14px;
-}
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  background-image: url('https://tailwindui.com/img/beams-cover@95.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
   margin: 0;
-  /* text-align: center; */
 }
+
+.login-card {
+  width: 420px;
+  padding: 32px;
+  border-radius: var(--vc-radius-lg);
+  box-shadow: var(--vc-shadow-lg);
+  background-color: var(--vc-surface);
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--vc-text);
+}
+
+.form-group { margin-bottom: 16px; }
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--vc-text);
+}
+
+.form-control {
+  border: 1px solid var(--vc-border);
+  border-radius: var(--vc-radius);
+  padding: 9px 12px;
+  font-size: 14px;
+  transition: border-color var(--vc-transition);
+}
+
+.form-control:focus {
+  border-color: var(--vc-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(221, 30, 37, 0.12);
+}
+
+.form-control.error-highlight { border-color: var(--vc-error); }
+
+.error-message {
+  color: var(--vc-error);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
 .login-button {
-  background-color: #dd1e25;
+  background-color: var(--vc-primary);
   color: #fff;
   padding: 10px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--vc-radius);
   cursor: pointer;
-  width: 30%;
-  margin-left: 120px;
-  
-  transition: background-color 0.3s ease;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color var(--vc-transition);
 }
-.form-control:focus {
-  color: var(--bs-body-color);
-  background-color: var(--bs-body-bg);
-  /* border-color: #86b7fe; */
-  outline: 0;
-  /* box-shadow: 0 0 0 .25rem rgba(13,110,253,.25); */
-}
+
+.login-button:hover { background-color: var(--vc-primary-hover); }
