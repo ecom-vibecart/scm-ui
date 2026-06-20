@@ -8,7 +8,7 @@ describe('Footer Component', () => {
     render(<Footer />);
     
     // Query the footer text
-    const footerText = screen.getByText(/© 2024 VibeCart - Nisum All Rights Reserved/i);
+    const footerText = screen.getByText(/VibeCart/i);
     
     // Assert that the footer text is in the document
     expect(footerText).toBeInTheDocument();

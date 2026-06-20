@@ -1,55 +1,65 @@
 @import '../Inventory/Styling/styles.css';
 
-.login-container {
+.login-page {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   min-height: 100vh;
-  background-image: url('https://tailwindui.com/img/beams-cover@95.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 100%;
-  margin: 0;
+  background-color: var(--vc-bg);
 }
 
 .login-card {
-  width: 420px;
-  padding: 32px;
+  background: var(--vc-surface);
+  border: 1px solid var(--vc-border);
   border-radius: var(--vc-radius-lg);
   box-shadow: var(--vc-shadow-lg);
-  background-color: var(--vc-surface);
+  padding: 36px 40px;
+  width: 420px;
+  max-width: 95vw;
 }
 
-.login-title {
+.login-logo {
   text-align: center;
-  margin-bottom: 24px;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--vc-text);
+  margin-bottom: 6px;
+  font-size: 1.8rem;
+  color: var(--vc-primary);
+}
+
+.login-logo .bold { font-weight: 700; }
+.login-logo span { font-weight: 400; }
+
+.login-subtitle {
+  text-align: center;
+  color: var(--vc-text-muted);
+  font-size: 13px;
+  margin-bottom: 28px;
 }
 
 .form-group { margin-bottom: 16px; }
 
 .form-label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-weight: 500;
   font-size: 13px;
   color: var(--vc-text);
 }
 
 .form-control {
+  width: 100%;
+  padding: 9px 12px;
   border: 1px solid var(--vc-border);
   border-radius: var(--vc-radius);
-  padding: 9px 12px;
   font-size: 14px;
-  transition: border-color var(--vc-transition);
+  color: var(--vc-text);
+  background: var(--vc-surface);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color var(--vc-transition), box-shadow var(--vc-transition);
 }
 
 .form-control:focus {
   border-color: var(--vc-primary);
-  outline: none;
   box-shadow: 0 0 0 3px rgba(221, 30, 37, 0.12);
 }
 
@@ -62,16 +72,30 @@
 }
 
 .login-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
   background-color: var(--vc-primary);
   color: #fff;
-  padding: 10px 20px;
   border: none;
   border-radius: var(--vc-radius);
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  width: 100%;
-  font-size: 15px;
-  font-weight: 500;
+  margin-top: 20px;
   transition: background-color var(--vc-transition);
 }
 
 .login-button:hover { background-color: var(--vc-primary-hover); }
+.login-button:active { background-color: var(--vc-primary-dark); }
+.login-button:disabled { opacity: 0.65; cursor: not-allowed; }
+
+.login-error {
+  margin-top: 14px;
+  padding: 9px 12px;
+  background-color: #fff5f5;
+  border: 1px solid #f5c2c7;
+  border-radius: var(--vc-radius);
+  color: var(--vc-error);
+  font-size: 13px;
+}
